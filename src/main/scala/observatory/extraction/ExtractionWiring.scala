@@ -1,14 +1,10 @@
-package observatory
+package observatory.extraction
 
 import java.time.LocalDate
 
-import observatory.extraction.ExtractionWiring
+import observatory.{Location, Temperature, Year}
 
-/**
-  * 1st milestone: data extraction
-  */
-object Extraction {
-
+object ExtractionWiring {
   /**
     * @param year             Year number
     * @param stationsFile     Path of the stations resource file to use (e.g. "/stations.csv")
@@ -16,7 +12,7 @@ object Extraction {
     * @return A sequence containing triplets (date, location, temperature)
     */
   def locateTemperatures(year: Year, stationsFile: String, temperaturesFile: String): Iterable[(LocalDate, Location, Temperature)] = {
-    ExtractionWiring.locateTemperatures(year, stationsFile, temperaturesFile)
+    ???
   }
 
   /**
@@ -24,7 +20,6 @@ object Extraction {
     * @return A sequence containing, for each location, the average temperature over the year.
     */
   def locationYearlyAverageRecords(records: Iterable[(LocalDate, Location, Temperature)]): Iterable[(Location, Temperature)] = {
-    ExtractionWiring.locationYearlyAverageRecords(records)
+    ???
   }
-
 }
