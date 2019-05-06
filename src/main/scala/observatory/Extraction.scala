@@ -2,7 +2,7 @@ package observatory
 
 import java.time.LocalDate
 
-import observatory.extraction.ExtractionWiring
+import observatory.extraction.ExtractionFacade
 
 /**
   * 1st milestone: data extraction
@@ -16,10 +16,7 @@ object Extraction {
     * @return A sequence containing triplets (date, location, temperature)
     */
   def locateTemperatures(year: Year, stationsFile: String, temperaturesFile: String): Iterable[(LocalDate, Location, Temperature)] = {
-    ExtractionWiring.locateTemperatures(year, stationsFile, temperaturesFile)
-    // 1. Read files
-    // 2. Filter out invalid data
-    // 3. Match temperatures with stations
+    ExtractionFacade.locateTemperatures(year, stationsFile, temperaturesFile)
   }
 
   /**
@@ -27,7 +24,7 @@ object Extraction {
     * @return A sequence containing, for each location, the average temperature over the year.
     */
   def locationYearlyAverageRecords(records: Iterable[(LocalDate, Location, Temperature)]): Iterable[(Location, Temperature)] = {
-    ExtractionWiring.locationYearlyAverageRecords(records)
+    ExtractionFacade.locationYearlyAverageRecords(records)
   }
 
 }

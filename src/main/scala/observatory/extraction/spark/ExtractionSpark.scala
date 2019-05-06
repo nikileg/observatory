@@ -1,9 +1,8 @@
-package observatory.extraction
+package observatory.extraction.spark
 
 import java.sql.Date
-import java.time.LocalDate
 
-import observatory.extraction.spark.{StationsDao, TemperaturesDao}
+import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
 import observatory.{Location, Temperature, Year}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
@@ -34,6 +33,8 @@ class ExtractionSpark(spark: SparkSession,
 
   def locationYearlyAverageRecords(records: Dataset[(Date, Location, Temperature)]): Dataset[(Location, Temperature)] = {
     records
-    ???
+      .groupBy("_2")
+      .avg("_3")
+      .as[(Location, Temperature)]
   }
 }

@@ -1,7 +1,8 @@
-package observatory.extraction.spark
+package observatory.extraction.spark.dao
 
 import observatory.Year
-import org.apache.spark.sql.types.{DoubleType, IntegerType, StringType, StructField, StructType}
+import observatory.extraction.spark.ReaderSpark
+import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 class TemperaturesDao(reader: ReaderSpark, spark: SparkSession) {

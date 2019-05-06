@@ -1,7 +1,8 @@
-package observatory.extraction.spark
+package observatory.extraction.spark.dao
 
-import org.apache.spark.sql.{Dataset, SparkSession}
+import observatory.extraction.spark.ReaderSpark
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 class StationsDao(reader: ReaderSpark, spark: SparkSession) {
 
