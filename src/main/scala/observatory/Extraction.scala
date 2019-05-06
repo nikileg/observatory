@@ -17,6 +17,9 @@ object Extraction {
     */
   def locateTemperatures(year: Year, stationsFile: String, temperaturesFile: String): Iterable[(LocalDate, Location, Temperature)] = {
     ExtractionWiring.locateTemperatures(year, stationsFile, temperaturesFile)
+    // 1. Read files
+    // 2. Filter out invalid data
+    // 3. Match temperatures with stations
   }
 
   /**

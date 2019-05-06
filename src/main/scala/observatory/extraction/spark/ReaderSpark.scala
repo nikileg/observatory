@@ -1,18 +1,20 @@
 package observatory.extraction.spark
 
-import observatory.extraction.models
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 class ReaderSpark(spark: SparkSession) {
 
-  def readCsv(file: String, schema: StructType): DataFrame = {
+  def readCsv(resourceName: String, schema: StructType): DataFrame = {
+    val filePath = getClass.getResource(resourceName)
     spark
       .read
       .schema(schema)
-      .option("separator", ",")
+      .option("sep", ",")
+      .option("nullValue", "")
       .option("inferSchema", false)
-      .csv(file)
+      .option("mode", "DROPMALFORMED")
+      .csv(filePath.toString)
   }
 
 }

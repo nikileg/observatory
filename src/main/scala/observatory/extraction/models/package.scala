@@ -3,7 +3,7 @@ package observatory.extraction
 import java.time.LocalDate
 
 import observatory.{Location, Temperature}
-import org.apache.spark.sql.types.{DoubleType, IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{BooleanType, DoubleType, IntegerType, StringType, StructField, StructType}
 
 package object models {
   type STN = Long
