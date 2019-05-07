@@ -1,10 +1,8 @@
 package observatory
 
-import java.time.LocalDate
-
 import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
-import observatory.extraction.spark.{ExtractionSpark, ReaderSpark, TemperaturesDao}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import observatory.extraction.spark.{ExtractionSpark, ReaderSpark}
+import org.apache.spark.sql.SparkSession
 
 object Main extends App {
   lazy val spark = SparkSession
