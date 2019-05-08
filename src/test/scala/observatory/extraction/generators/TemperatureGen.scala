@@ -13,7 +13,7 @@ trait TemperatureGen {
     plusDays <- choose(0, 365)
   } yield LocalDate.of(year0, 0, 0).plusDays(plusDays)
 
-  lazy val stationsGen = for {
+  lazy val temperatureGen = for {
     stn <- option(posNum[STN])
     wban <- option(posNum[WBAN])
     date <- option(dateGen)
@@ -22,7 +22,7 @@ trait TemperatureGen {
     fahrenheit <- option(chooseNum[Fahrenheit](zeroKelvinAsFahrenheit, maxTemperature, maxTemperature))
   } yield TemperatureCsv(stn, wban, month, day, fahrenheit)
 
-  implicit lazy val arbStation = Arbitrary(stationsGen)
+  implicit lazy val arbTemperature = Arbitrary(temperatureGen)
 
   private final val maxTemperature = 9999.9
 
