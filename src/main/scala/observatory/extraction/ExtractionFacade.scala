@@ -22,7 +22,7 @@ object ExtractionFacade {
     extractionService
       .locateTemperatures(year, stationsFile, temperaturesFile)
       .rdd
-      .map {case (date, loc, temp) => (date: LocalDate, loc, temp)}
+      .map { case (date, loc, temp) => (date: LocalDate, loc, temp) }
       .collect()
   }
 
@@ -34,8 +34,8 @@ object ExtractionFacade {
 
     val ds = records
       .toStream
-      .map { case (locDate, loc, temp) => (locDate: Date, loc, temp) }
       .toDS()
+      .map { case (locDate, loc, temp) => (locDate: Date, loc, temp) }
 
     ExtractionWiringSpark
       .extractionService

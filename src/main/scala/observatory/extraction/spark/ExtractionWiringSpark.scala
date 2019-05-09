@@ -2,8 +2,11 @@ package observatory.extraction.spark
 
 import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
 import org.apache.spark.sql.SparkSession
+import org.apache.log4j.{Level, Logger}
 
 object ExtractionWiringSpark {
+  Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
+
   lazy val spark = SparkSession
     .builder()
     .master("local[*]")

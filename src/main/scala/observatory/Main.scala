@@ -2,9 +2,12 @@ package observatory
 
 import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
 import observatory.extraction.spark.{ExtractionSpark, ReaderSpark}
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.SparkSession
 
 object Main extends App {
+  Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
+
   lazy val spark = SparkSession
     .builder()
     .master("local[*]")
@@ -22,10 +25,15 @@ object Main extends App {
 
   val service = new ExtractionSpark(spark, stationsDao, temperaturesDao)
 
+  temperaturesDao
+    .getByYear(year, temperaturesFile)
+    .show()
+
   val extracted = service
     .locateTemperatures(year, stationsFile, temperaturesFile)
-
-  service
-    .locationYearlyAverageRecords(extracted)
     .show()
+
+//  service
+//    .locationYearlyAverageRecords(extracted)
+//    .show()
 }

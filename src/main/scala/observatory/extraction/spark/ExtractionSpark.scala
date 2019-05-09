@@ -1,6 +1,7 @@
 package observatory.extraction.spark
 
 import java.sql.Date
+import java.time.LocalDate
 
 import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
 import observatory.{Location, Temperature, Year}
@@ -11,6 +12,7 @@ class ExtractionSpark(spark: SparkSession,
                       temperaturesDao: TemperaturesDao) {
 
   import spark.implicits._
+  import DateImplicits._
 
   def locateTemperatures(year: Year,
                          stationsFile: String,
@@ -23,10 +25,10 @@ class ExtractionSpark(spark: SparkSession,
         && stations("wban_id") <=> temperatures("wban_id")
     )
     val result = joined
-      .select($"day", $"month", $"latitude", $"longitude", $"fahrenheit")
+      .select($"month", $"day", $"latitude", $"longitude", $"fahrenheit")
       .as[(Int, Int, Double, Double, Double)]
-      .map { case (day, month, lat, lon, fahr) =>
-        (new Date(year, month, day), Location(lat, lon), Temperature.fromFahrenheit(fahr))
+      .map { case (month, day, lat, lon, fahr) =>
+        (LocalDate.of(year, month, day): Date, Location(lat, lon), Temperature.fromFahrenheit(fahr))
       }
     result
   }
