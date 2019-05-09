@@ -1,5 +1,6 @@
 package observatory.extraction.spark
 
+import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
 import org.apache.spark.sql.SparkSession
 
 object SparkTestWiring {
