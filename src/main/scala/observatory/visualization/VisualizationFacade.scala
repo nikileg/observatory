@@ -1,12 +1,9 @@
-package observatory
+package observatory.visualization
 
-import com.sksamuel.scrimage.{Image, Pixel}
-import observatory.visualization.VisualizationFacade
+import com.sksamuel.scrimage.Image
+import observatory.{Color, Location, Temperature}
 
-/**
-  * 2nd milestone: basic visualization
-  */
-object Visualization {
+object VisualizationFacade {
 
   /**
     * @param temperatures Known temperatures: pairs containing a location and the temperature at this location
@@ -14,7 +11,7 @@ object Visualization {
     * @return The predicted temperature at `location`
     */
   def predictTemperature(temperatures: Iterable[(Location, Temperature)], location: Location): Temperature = {
-    VisualizationFacade.predictTemperature(temperatures, location)
+    ???
   }
 
   /**
@@ -23,7 +20,7 @@ object Visualization {
     * @return The color that corresponds to `value`, according to the color scale defined by `points`
     */
   def interpolateColor(points: Iterable[(Temperature, Color)], value: Temperature): Color = {
-    VisualizationFacade.interpolateColor(points, value)
+    ???
   }
 
   /**
@@ -32,8 +29,7 @@ object Visualization {
     * @return A 360×180 image where each pixel shows the predicted temperature at its location
     */
   def visualize(temperatures: Iterable[(Location, Temperature)], colors: Iterable[(Temperature, Color)]): Image = {
-    VisualizationFacade.visualize(temperatures, colors)
+    ???
   }
 
 }
-
