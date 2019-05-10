@@ -3,14 +3,15 @@ package observatory.extraction
 import java.sql.Date
 import java.time.LocalDate
 
-import observatory.extraction.spark.{ExtractionWiringSpark, DateImplicits}
+import observatory.extraction.spark.DateImplicits
+import observatory.wiring.SparkWiring
 import observatory.{Location, Temperature, Year}
 
 object ExtractionFacade {
 
-  import ExtractionWiringSpark._
-  import ExtractionWiringSpark.spark.implicits._
   import DateImplicits._
+  import SparkWiring._
+  import SparkWiring.spark.implicits._
 
   /**
     * @param year             Year number
@@ -37,7 +38,7 @@ object ExtractionFacade {
       .toDS()
       .map { case (locDate, loc, temp) => (locDate: Date, loc, temp) }
 
-    ExtractionWiringSpark
+    SparkWiring
       .extractionService
       .locationYearlyAverageRecords(ds)
       .collect()
