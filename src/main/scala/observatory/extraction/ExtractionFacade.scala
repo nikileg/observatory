@@ -35,8 +35,8 @@ object ExtractionFacade {
 
     val ds = records
       .toStream
-      .toDS()
       .map { case (locDate, loc, temp) => (locDate: Date, loc, temp) }
+      .toDS()
 
     SparkWiring
       .extractionService
