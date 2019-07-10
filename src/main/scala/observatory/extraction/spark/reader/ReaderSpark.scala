@@ -1,11 +1,12 @@
-package observatory.extraction.spark
+package observatory.extraction.spark.reader
 
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-class ReaderSpark(spark: SparkSession) {
+trait ReaderSpark {
+  protected def spark: SparkSession
 
-  def readCsv(resourceName: String, schema: StructType): DataFrame = {
+  protected def readCsv(resourceName: String, schema: StructType): DataFrame = {
     val filePath = getClass.getResource(resourceName)
     spark
       .read
@@ -16,5 +17,4 @@ class ReaderSpark(spark: SparkSession) {
       .option("mode", "DROPMALFORMED")
       .csv(filePath.toString)
   }
-
 }

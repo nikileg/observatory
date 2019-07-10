@@ -1,34 +1,38 @@
 package observatory.extraction.spark
 
 import java.sql.Date
-import java.time.LocalDate
 
 import observatory.extraction.spark.dao.{StationsDao, TemperaturesDao}
 import observatory.{Location, Temperature, Year}
+import observatory.extraction.spark.reader.{StationReader, TemperatureReader}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 class ExtractionSpark(spark: SparkSession,
                       stationsDao: StationsDao,
-                      temperaturesDao: TemperaturesDao) {
-
+                      stationReader: StationReader,
+                      temperaturesDao: TemperaturesDao,
+                      temperatureReader: TemperatureReader) {
   import spark.implicits._
-  import DateImplicits._
 
   def locateTemperatures(year: Year,
                          stationsFile: String,
                          temperaturesFile: String): Dataset[(Date, Location, Temperature)] = {
-    val stations = stationsDao.get(stationsFile)
-    val temperatures = temperaturesDao.getByYear(year, temperaturesFile)
+    val stations = stationReader
+      .readStations(stationsFile)
+      .transform(stationsDao.get)
 
-    val joined = stations.join(temperatures,
-      stations("stn_id") <=> temperatures("stn_id")
-        && stations("wban_id") <=> temperatures("wban_id")
-    )
-    val result = joined
-      .select($"month", $"day", $"latitude", $"longitude", $"fahrenheit")
-      .as[(Int, Int, Double, Double, Double)]
-      .map { case (month, day, lat, lon, fahr) =>
-        (LocalDate.of(year, month, day): Date, Location(lat, lon), Temperature.fromFahrenheit(fahr))
+    val temperatures = temperatureReader
+      .readTemperatures(temperaturesFile)
+      .transform(temperaturesDao.getByYear(_, year))
+
+    val result = temperatures
+      .joinWith(stations,
+        stations("stn") <=> temperatures("stn") &&
+          stations("wban") <=> temperatures("wban")
+      )
+      .map {
+        case (temperatureM, stationM) =>
+          (temperatureM.date, stationM.location, temperatureM.temperature)
       }
     result
   }

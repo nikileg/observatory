@@ -1,29 +1,15 @@
 package observatory.extraction.spark.dao
 
-import observatory.extraction.spark.ReaderSpark
-import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
+import observatory.extraction.models.StationModel
+import observatory.extraction.spark.csvmodel.StationCsv
 import org.apache.spark.sql.{Dataset, SparkSession}
 
-class StationsDao(reader: ReaderSpark, spark: SparkSession) {
-
+class StationsDao(spark: SparkSession) {
   import spark.implicits._
 
-  def get(resourceName: String): Dataset[(String, String, Double, Double)] = {
-    reader
-      .readCsv(resourceName, stationSchema)
-      .as[(String, String, Double, Double)]
-      .filter($"longitude" isNotNull)
-      .filter($"latitude" isNotNull)
+  //TODO: rename
+  def get(parsed: Dataset[StationCsv]): Dataset[StationModel] = {
+    parsed
+      .map(StationModel.fromCsvRow)
   }
-
-  private val stationSchema = StructType(
-    Array(
-      StructField(name = "stn_id", dataType = StringType, nullable = true),
-      StructField(name = "wban_id", dataType = StringType, nullable = true),
-      StructField(name = "latitude", dataType = DoubleType, nullable = false),
-      StructField(name = "longitude", dataType = DoubleType, nullable = false)
-    )
-  )
 }
-
-

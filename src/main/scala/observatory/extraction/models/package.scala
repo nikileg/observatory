@@ -1,8 +1,8 @@
 package observatory.extraction
 
 package object models {
-  type STN = Long
-  type WBAN = Long
+  type STN = Option[String]
+  type WBAN = Option[String]
   type Latitude = Double
   type Longitude = Double
 

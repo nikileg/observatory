@@ -1,4 +1,4 @@
-package observatory.extraction.spark
+package observatory.extraction
 
 import java.sql.Date
 import java.time.LocalDate
