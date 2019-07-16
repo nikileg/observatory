@@ -1,19 +1,21 @@
 package observatory.visualization.interpolation
 
+import observatory.Location
+
 class GreatCircleDistance(val radius: BigDecimal, eta: Double) {
 
   /**
     * See <a href="https://en.wikipedia.org/wiki/Great-circle_distance">https://en.wikipedia.org/wiki/Great-circle_distance</a>
     *
-    * @param point1 polar coordinates on the sphere (in degrees)
-    * @param point2 polar coordinates on the sphere (in degrees)
+    * @param location1 polar coordinates on the sphere (in degrees)
+    * @param location2 polar coordinates on the sphere (in degrees)
     */
-  def deltaSigma(point1: (Double, Double), point2: (Double, Double)): Double = {
+  def deltaSigma(location1: Location, location2: Location): Double = {
     import math.{abs, acos, cos, sin, Pi}
 
-    if (point1 == point2) return 0
-    val (lat1, lon1) = point1
-    val (lat2, lon2) = point2
+    if (location1 == location2) return 0
+    val Location(lat1, lon1) = location1
+    val Location(lat2, lon2) = location2
     if (lat1 + lat2 < eta &&
       (lon1 - lon2 + 180 < eta || lon1 - lon2 - 180 < eta)) return Pi
 
@@ -26,10 +28,10 @@ class GreatCircleDistance(val radius: BigDecimal, eta: Double) {
   /**
     * See <a href="https://en.wikipedia.org/wiki/Great-circle_distance">https://en.wikipedia.org/wiki/Great-circle_distance</a>
     *
-    * @param point1 polar coordinates on the sphere (in degrees)
-    * @param point2 polar coordinates on the sphere (in degrees)
+    * @param location1 polar coordinates on the sphere (in degrees)
+    * @param location2 polar coordinates on the sphere (in degrees)
     */
-  def distance(point1: (Double, Double), point2: (Double, Double)): BigDecimal = {
-    radius * deltaSigma(point1, point2)
+  def distance(location1: Location, location2: Location): BigDecimal = {
+    radius * deltaSigma(location1, location2)
   }
 }
