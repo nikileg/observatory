@@ -1,5 +1,6 @@
-package observatory.visualization.interpolation
+package observatory.visualization.interpolation.color
 
+import observatory.visualization.interpolation.InterpolationService
 import observatory.{Color, Temperature}
 
 import scala.collection.immutable.TreeMap

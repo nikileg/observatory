@@ -1,47 +1,49 @@
 package observatory.visualization.interpolation
 
 import observatory.Location
-import org.scalatest.{Matchers, Outcome, PropSpec}
-import org.scalatest.prop.{GeneratorDrivenPropertyChecks, PropertyChecks}
 import observatory.generator.LocationGenerator
+import observatory.visualization.interpolation.space.GreatCircleDistance
+import org.apache.commons.math.util.{MathUtils => MU}
+import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatest.{Matchers, PropSpec}
 
 class GreatCircleDistanceSpec extends PropSpec with GeneratorDrivenPropertyChecks with Matchers {
   import LocationGenerator.arbLocation
-
-  override protected def withFixture(test: NoArgTest): Outcome = {
-    super.withFixture(test) match {
-      case other =>
-        distanceService = new GreatCircleDistance(radius, eta)
-        other
-    }
-  }
 
   property("Circle distance should be greater than calculated by straight line") {
     forAll { (location1: Location, location2: Location) =>
       val circle = distanceService.distance(location1, location2)
       val line = straightDistance(location1, location2)
-      circle should be >= line
+
+      circle should be >= (line - eta)
+      //      /*
+      //        Couldn't configure tolerance for floating point comparison
+      //        instead using this crutch for `circle should be >= line +- tolerance`
+      //       */
+      //      assert((circle - line).abs <= tolerance || circle >= line)
     }
   }
 
-  private def straightDistance(point1: Location, point2: Location): BigDecimal = {
-    import math.{sqrt, pow}
-    val (x1, y1, z1) = polarToEuclidean(point1)
-    val (x2, y2, z2) = polarToEuclidean(point2)
+  property("Circle distance is always <= pi * radius") {
+    forAll { (location1: Location, location2: Location) =>
+      val distance = distanceService.distance(location1, location2)
+      distance should be <= (PI_R)
+    }
+  }
 
-    sqrt(
-      pow(x1 - x2, 2) +
-        pow(y1 - y2, 2) +
-        pow(z1 - z2, 2)
-    )
+  private def straightDistance(location1: Location, location2: Location): BigDecimal = {
+    val point1 = polarToEuclidean(location1)
+    val point2 = polarToEuclidean(location2)
+
+    MU.distance(point1, point2)
   }
 
   //unstable
-  private def polarToEuclidean(location: Location): (Double, Double, Double) = {
-    import math.{sin, cos}
+  private def polarToEuclidean(location: Location): Array[Double] = {
+    import math.{cos, sin}
     val latR = location.lat.toRadians
     val lonR = location.lon.toRadians
-    (
+    Array(
       cos(latR) * cos(lonR),
       cos(latR) * sin(lonR),
       sin(latR)
@@ -50,5 +52,6 @@ class GreatCircleDistanceSpec extends PropSpec with GeneratorDrivenPropertyCheck
 
   private val radius = 1
   private val eta = 1e-4
-  private var distanceService = new GreatCircleDistance(radius, eta)
+  private val distanceService = new GreatCircleDistance(radius, eta)
+  private val PI_R = BigDecimal(radius * math.Pi)
 }
