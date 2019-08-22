@@ -7,6 +7,13 @@ package observatory
   */
 case class Location(lat: Double, lon: Double)
 
+object Location {
+  val max_lat: Double = 90.0
+  val min_lat: Double = -90.0
+  val max_lon: Double = 180.0
+  val min_lon: Double = -180.0
+}
+
 /**
   * Introduced in Week 3. Represents a tiled web map tile.
   * See https://en.wikipedia.org/wiki/Tiled_web_map
