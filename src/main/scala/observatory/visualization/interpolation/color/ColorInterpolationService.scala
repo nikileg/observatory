@@ -1,12 +1,12 @@
 package observatory.visualization.interpolation.color
 
-import observatory.visualization.interpolation.InterpolationService
 import observatory.{Color, Temperature}
+import observatory.visualization.interpolation.InterpolationService
 
 import scala.collection.immutable.TreeMap
 
 class ColorInterpolationService(linearInterpolationService: InterpolationService)
-                               (points: Iterable[(Temperature, Color)]) {
+                               (palette: Iterable[(Temperature, Color)]) {
   import linearInterpolationService.linearFract
 
   def interpolateColor(temperature: Temperature): Color = {
@@ -36,5 +36,5 @@ class ColorInterpolationService(linearInterpolationService: InterpolationService
     Color(newRed, newGreen, newBlue)
   }
 
-  private val treeMap: TreeMap[Temperature, Color] = TreeMap(points.toSeq: _*)
+  private val treeMap: TreeMap[Temperature, Color] = TreeMap(palette.toSeq: _*)
 }
