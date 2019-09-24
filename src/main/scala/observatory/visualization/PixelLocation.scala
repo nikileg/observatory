@@ -1,9 +1,6 @@
-package observatory.visualization.image
+package observatory.visualization
 
-import com.sksamuel.scrimage.{Image, Pixel}
 import observatory.Location
-
-import scala.util.Random
 
 case class PixelLocation(x: Int, y: Int) {
   import Location.{max_lat, max_lon}

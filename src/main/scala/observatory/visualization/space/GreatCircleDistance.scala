@@ -1,9 +1,9 @@
-package observatory.visualization.interpolation.space
+package observatory.visualization.space
 
 import observatory.Location
 import org.apache.commons.math.util.{MathUtils => MU}
 
-class GreatCircleDistance(val radius: BigDecimal, eta: Double) {
+class GreatCircleDistance(val radius: BigDecimal, eta: Double) extends Distance[Location, BigDecimal]{
 
   /**
     * See <a href="https://en.wikipedia.org/wiki/Great-circle_distance">https://en.wikipedia.org/wiki/Great-circle_distance</a>
@@ -11,7 +11,7 @@ class GreatCircleDistance(val radius: BigDecimal, eta: Double) {
     * @param location1 polar coordinates on the sphere (in degrees)
     * @param location2 polar coordinates on the sphere (in degrees)
     */
-  def distance(location1: Location, location2: Location): BigDecimal = {
+  override def distance(location1: Location, location2: Location): BigDecimal = {
     radius * deltaSigma(location1, location2)
   }
 
@@ -22,7 +22,7 @@ class GreatCircleDistance(val radius: BigDecimal, eta: Double) {
     * @param location2 polar coordinates on the sphere (in degrees)
     */
   private def deltaSigma(location1: Location, location2: Location): BigDecimal = {
-    import math.{Pi, abs, acos, cos, sin}
+    import math.{abs, acos, cos, sin, Pi}
 
     if (location1 == location2) return 0
     val Location(lat1, lon1) = location1

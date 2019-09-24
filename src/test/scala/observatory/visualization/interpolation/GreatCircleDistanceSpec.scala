@@ -2,7 +2,7 @@ package observatory.visualization.interpolation
 
 import observatory.Location
 import observatory.generator.LocationGenerator
-import observatory.visualization.interpolation.space.GreatCircleDistance
+import observatory.visualization.space.GreatCircleDistance
 import org.apache.commons.math.util.{MathUtils => MU}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{Matchers, PropSpec}
